@@ -1,0 +1,45 @@
+/* .btn {
+  border: 5px solid black;
+} */
+
+body {
+  background-image: url("./nedamco-logo.png");
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 300px;
+  background-clip: border-box;
+}
+.background-image {
+  width: fit-content;
+}
+.btn-primary {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  /* margin: 10px; */
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background-color: #77925f;
+  border: 10px;
+  border-color: black;
+  line-height: 1.5;
+}
+
+.btn-primary:hover {
+  color: #77925f;
+  background-color: white;
+  border-bottom: 2px solid #77925f;
+}
+
+.mt-1 {
+  color: #77925f;
+}
+
+.mt-1:focus {
+  color: #77925f;
+}
+
+.form-control,
+.input-group-text {
+  border: 1px solid #77925f;
+}

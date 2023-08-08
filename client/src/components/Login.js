@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Redirect } from 'react-router-dom'
+import { Redirect } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
+import "./Login.css";
 
 export default class Login extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ export default class Login extends Component {
       passwordShow: false,
       hasError: false,
       errorMessage: "",
-      done: false
+      done: false,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -50,14 +51,14 @@ export default class Login extends Component {
       data: user,
     })
       .then((res) => {
-        localStorage.setItem('token', res.data.token)
-        this.setState({done: true})
+        localStorage.setItem("token", res.data.token);
+        this.setState({ done: true });
       })
       .catch((err) => {
         console.log(err.response);
         this.setState({
           hasError: true,
-          errorMessage: err.response.data.message
+          errorMessage: err.response.data.message,
         });
       });
   };
@@ -68,8 +69,9 @@ export default class Login extends Component {
         <div className="register-logo">
           <a href="/">
             {this.state.done ? <Redirect to="/" /> : <></>}
-            <b>HR</b>MS{" "}
-            <small style={{ fontSize: "10px" }}>by Mantzaris Vasileios</small>
+            {/* <b>HR</b>MS{" "}
+            <small style={{ fontSize: "10px" }}>by Mantzaris Vasileios</small> */}
+            <h1>NEDAMCO Africa HRM System</h1>
           </a>
         </div>
         <div className="card">
@@ -130,7 +132,7 @@ export default class Login extends Component {
                 <div className="col-8"></div>
                 {/* /.col */}
                 <div className="col-4">
-                  <button type="submit" className="btn btn-primary btn-block">
+                  <button type="submit" className="btn-primary btn-block">
                     Login
                   </button>
                 </div>
@@ -141,7 +143,7 @@ export default class Login extends Component {
               Don't have an account? Register
             </a>
             <hr className="mt-3" />
-            <p className="mb-0">by Mantzaris Vasileios</p>
+            {/* <p className="mb-0">by Mantzaris Vasileios</p> */}
           </div>
           {/* /.form-box */}
         </div>

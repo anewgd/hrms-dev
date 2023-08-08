@@ -1,0 +1,20 @@
+.panel-heading.with-border > .panel-title {
+  color: white;
+  background: #77925f;
+  font-weight: 800;
+}
+
+.panel-default > .panel-heading {
+  background: #77925f;
+}
+
+.fc-button {
+  background: #77925f;
+  border-color: #77925f;
+  font-weight: 800;
+}
+
+.main-card > .card-header {
+  background: #77925f;
+  font-weight: 800;
+}

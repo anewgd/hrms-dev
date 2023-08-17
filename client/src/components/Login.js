@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
-import "./Login.css";
+//import "./Login.css";
 
 export default class Login extends Component {
   constructor(props) {

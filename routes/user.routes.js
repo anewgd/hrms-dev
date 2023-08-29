@@ -1,39 +1,77 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-const withAuth = require("../withAuth")
+const withAuth = require("../withAuth");
 
 const user = require("../controllers/user.controller.js");
 
 // Create a new user
-router.post('/', user.create);
+router.post("/", user.create);
 
 // Retrieve all Users
-router.get('/', withAuth.verifyToken, withAuth.withRoleAdminOrManager, user.findAll);
+router.get(
+  "/",
+  withAuth.verifyToken,
+  withAuth.withRoleAdminOrManager,
+  user.findAll
+);
 
 //Retreive user count
-router.get('/total', withAuth.verifyToken, withAuth.withRoleAdminOrManager, user.findTotal);
+router.get(
+  "/total",
+  withAuth.verifyToken,
+  withAuth.withRoleAdminOrManager,
+  user.findTotal
+);
 
-router.get('/total/department/:id', withAuth.verifyToken, withAuth.withRoleManager, user.findTotalByDept)
+router.get(
+  "/total/department/:id",
+  withAuth.verifyToken,
+  withAuth.withRoleManager,
+  user.findTotalByDept
+);
 
 //Retrieve all Users by Department Id
-router.get('/department/:id', withAuth.verifyToken, user.findAllByDeptId);
+router.get("/department/:id", withAuth.verifyToken, user.findAllByDeptId);
 
 //Retrieve a single User with an id
-router.get('/:id', withAuth.verifyToken, user.findOne);
+router.get("/:id", withAuth.verifyToken, user.findOne);
 
 // Update a User with id
-router.put('/:id', withAuth.verifyToken, withAuth.withRoleAdmin, user.update);
+router.put("/:id", withAuth.verifyToken, withAuth.withRoleAdmin, user.update);
 
-router.put('/changePassword/:id', withAuth.verifyToken, user.changePassword)
+router.put("/changePassword/:id", withAuth.verifyToken, user.changePassword);
 
 // Delete a User with id
-router.delete('/:id', withAuth.verifyToken, withAuth.withRoleAdmin, user.delete);
+router.delete(
+  "/:id",
+  withAuth.verifyToken,
+  withAuth.withRoleAdmin,
+  user.delete
+);
 
 // Delete all Users
-router.delete('/', withAuth.verifyToken, withAuth.withRoleAdmin, user.deleteAll);
+router.delete(
+  "/",
+  withAuth.verifyToken,
+  withAuth.withRoleAdmin,
+  user.deleteAll
+);
 
 //Delete all Users by Department Id
-router.delete('/department/:id', withAuth.verifyToken, withAuth.withRoleAdmin, user.deleteAllByDeptId)
+router.delete(
+  "/department/:id",
+  withAuth.verifyToken,
+  withAuth.withRoleAdmin,
+  user.deleteAllByDeptId
+);
+
+//Retrieve all employees
+router.get(
+  "/employees",
+  withAuth.verifyToken,
+  withAuth.withRoleManager,
+  user.findAllEmployees
+);
 
 module.exports = router;

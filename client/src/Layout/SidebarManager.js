@@ -1,29 +1,30 @@
 import React, { Component } from "react";
-import { loadTree } from '../menuTreeHelper';
-import {NavLink} from 'react-router-dom'
+import { loadTree } from "../menuTreeHelper";
+import { NavLink } from "react-router-dom";
 
 export default class SidebarManager extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      user: {}
-    }
+      user: {},
+    };
   }
 
   componentDidMount() {
-    let userData = JSON.parse(localStorage.getItem('user'))
-    this.setState({user: userData})
+    let userData = JSON.parse(localStorage.getItem("user"));
+    this.setState({ user: userData });
     loadTree();
   }
 
   render() {
     return (
-      <aside className="main-sidebar sidebar-dark-primary elevation-4" >
+      <aside className="main-sidebar sidebar-dark-primary elevation-4">
         {/* Brand Logo */}
         <a href="/" className="brand-link">
-          <span className="brand-text font-weight-light ml-1">HRMS Manager</span>
+          <span className="brand-text font-weight-light ml-1">
+            HRMS Manager
+          </span>
         </a>
         {/* Sidebar */}
         <div className="sidebar">
@@ -31,7 +32,7 @@ export default class SidebarManager extends Component {
           <div className="user-panel mt-3 pb-3 mb-3 d-flex">
             <div className="image">
               <img
-                src={process.env.PUBLIC_URL + '/user-64.png'}
+                src={process.env.PUBLIC_URL + "/user-64.png"}
                 className="img-circle elevation-2"
                 alt="User Image"
               />
@@ -64,21 +65,55 @@ export default class SidebarManager extends Component {
               <li className="nav-item">
                 <NavLink exact to="/employee-list" className="nav-link">
                   <i className="nav-icon fas fa-users" />
+                  <p>My Employees</p>
+                </NavLink>
+              </li>
+              <li className="nav-item has-treeview">
+                {/* Changes Below */}
+                <NavLink
+                  to="/fake-url"
+                  className="nav-link"
+                  activeClassName="nav-link"
+                >
+                  <i className="nav-icon fas fa-euro-sign" />
                   <p>
-                    My Employees
+                    Performance
+                    <i className="right fas fa-angle-left" />
                   </p>
                 </NavLink>
+                <ul className="nav nav-treeview">
+                  <li className="nav-item">
+                    <NavLink to="/indicator" className="nav-link">
+                      <i className="fas fa-euro-sign nav-icon" />
+                      <p>Indicators</p>
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to="/evaluation" className="nav-link">
+                      <i className="fas fa-users nav-icon" />
+                      <p>Evaluations</p>
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to="/report" className="nav-link">
+                      <i className="fas fa-money-check nav-icon" />
+                      <p>Reports</p>
+                    </NavLink>
+                  </li>
+                </ul>
               </li>
               <li className="nav-item">
                 <NavLink to="/job-list" className="nav-link">
                   <i className="nav-icon fas fa-briefcase" />
-                  <p>
-                    Job List
-                  </p>
+                  <p>Job List</p>
                 </NavLink>
               </li>
               <li className="nav-item has-treeview">
-                <NavLink to="/fake-url" className="nav-link" activeClassName="nav-link">
+                <NavLink
+                  to="/fake-url"
+                  className="nav-link"
+                  activeClassName="nav-link"
+                >
                   <i className="nav-icon fa fa-rocket" />
                   <p>
                     Applications
@@ -101,7 +136,11 @@ export default class SidebarManager extends Component {
                 </ul>
               </li>
               <li className="nav-item has-treeview">
-                <NavLink to="/fake-url" className="nav-link" activeClassName="nav-link">
+                <NavLink
+                  to="/fake-url"
+                  className="nav-link"
+                  activeClassName="nav-link"
+                >
                   <i className="nav-icon fas fa-money-bill" />
                   <p>
                     Expense Management
@@ -126,9 +165,7 @@ export default class SidebarManager extends Component {
               <li className="nav-item">
                 <NavLink exact to="/announcement" className="nav-link">
                   <i className="nav-icon fa fa-bell" />
-                  <p>
-                    Announcements
-                  </p>
+                  <p>Announcements</p>
                 </NavLink>
               </li>
             </ul>

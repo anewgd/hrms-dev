@@ -19,7 +19,7 @@ export default class EmployeeAdd extends Component {
       bankName: "",
       accountName: "",
       accountNumber: "",
-      iBan: "",
+      //iBan: "",
       address: "",
       country: "",
       city: "",
@@ -118,7 +118,7 @@ export default class EmployeeAdd extends Component {
               bankName: this.state.bankName,
               accountName: this.state.accountName,
               accountNumber: this.state.accountNumber,
-              iban: this.state.iBan,
+              //iban: this.state.iBan,
               userId: userId,
             };
 
@@ -466,7 +466,7 @@ export default class EmployeeAdd extends Component {
                             placeholder="Enter Account number"
                           />
                         </Form.Group>
-                        <Form.Group controlId="formIban">
+                        {/* <Form.Group controlId="formIban">
                           <Form.Label className="text-muted">iBan</Form.Label>
                           <Form.Control
                             type="text"
@@ -475,7 +475,7 @@ export default class EmployeeAdd extends Component {
                             name="iBan"
                             placeholder="Enter Iban"
                           />
-                        </Form.Group>
+                        </Form.Group> */}
                       </Card.Text>
                     </Card.Body>
                   </Card>

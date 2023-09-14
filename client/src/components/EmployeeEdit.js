@@ -1,282 +1,301 @@
 import React, { Component } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
-import { Redirect, NavLink } from 'react-router-dom'
+import { Redirect, NavLink } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import axios from 'axios'
-import moment from 'moment'
+import axios from "axios";
+import moment from "moment";
 
 export default class EmployeeEdit extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-        user: {
-            id: null,
-            fullName: '',
-            role: null,
-            active: null,
-            departmentId: null
-        },
-        userPersonalInfo: {
-            id: null,
-            dateOfBirth: null,
-            gender: '',
-            maritalStatus: '',
-            fatherName: '',
-            idNumber: '',
-            address: '',
-            city: '',
-            country: '',
-            mobile: '',
-            phone: null,
-            emailAddress: ''
-        },
-        userFinancialInfo: {
-            id: null,
-            bankName: '',
-            accountName: '',
-            accountNumber: '',
-            iban: ''
-        },
-        department: {
-          departmentId: null,
-          departmentName: null
-        },
-        departments: [],
-        job: {
-          id: null,
-          jobTitle: null,
-          startDate: null,
-          endDate: null
-        },
-        hasError: false,
-        errMsg: "",
-        completed: false,
-        falseRedirect: false
+      user: {
+        id: null,
+        fullName: "",
+        role: null,
+        active: null,
+        departmentId: null,
+      },
+      userPersonalInfo: {
+        id: null,
+        dateOfBirth: null,
+        gender: "",
+        maritalStatus: "",
+        fatherName: "",
+        idNumber: "",
+        address: "",
+        city: "",
+        country: "",
+        mobile: "",
+        phone: null,
+        emailAddress: "",
+      },
+      userFinancialInfo: {
+        id: null,
+        bankName: "",
+        accountName: "",
+        accountNumber: "",
+        //iban: ''
+      },
+      department: {
+        departmentId: null,
+        departmentName: null,
+      },
+      departments: [],
+      job: {
+        id: null,
+        jobTitle: null,
+        startDate: null,
+        endDate: null,
+      },
+      hasError: false,
+      errMsg: "",
+      completed: false,
+      falseRedirect: false,
     };
   }
 
   componentDidMount() {
-      if(this.props.location.state) {
-          axios({
-              method: 'get',
-              url: 'api/users/' + this.props.location.state.selectedUser.id,
-              headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
-          })
-          .then(res => {
-                let user = res.data
-                this.setState({user: user})
-                if(user.jobs.length > 0) {
-                  user.jobs.map((job, index) => {
-                    if(new Date(job.startDate) <= Date.now() && new Date(job.endDate) >= Date.now()) {
-                      job.startDate = moment(new Date(job.startDate)).toDate()
-                      job.endDate = moment(new Date(job.endDate)).toDate()
-                      this.setState({job: job})
-                    }
-                  })
-                }
-                this.setState({department: user.department})
-                if(user.user_personal_info.dateOfBirth) {
-                    user.user_personal_info.dateOfBirth = moment(new Date(user.user_personal_info.dateOfBirth)).toDate()
-                }
-                this.setState({userPersonalInfo: user.user_personal_info})
-                this.setState({userFinancialInfo: user.user_financial_info})
-          })
-          .catch(err => {
-              console.log(err)
-          })
+    if (this.props.location.state) {
+      axios({
+        method: "get",
+        url: "api/users/" + this.props.location.state.selectedUser.id,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+        .then((res) => {
+          let user = res.data;
+          this.setState({ user: user });
+          if (user.jobs.length > 0) {
+            user.jobs.map((job, index) => {
+              if (
+                new Date(job.startDate) <= Date.now() &&
+                new Date(job.endDate) >= Date.now()
+              ) {
+                job.startDate = moment(new Date(job.startDate)).toDate();
+                job.endDate = moment(new Date(job.endDate)).toDate();
+                this.setState({ job: job });
+              }
+            });
+          }
+          this.setState({ department: user.department });
+          if (user.user_personal_info.dateOfBirth) {
+            user.user_personal_info.dateOfBirth = moment(
+              new Date(user.user_personal_info.dateOfBirth)
+            ).toDate();
+          }
+          this.setState({ userPersonalInfo: user.user_personal_info });
+          this.setState({ userFinancialInfo: user.user_financial_info });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-          axios({
-            method: 'get',
-            url: '/api/departments',
-            headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
-          })
-          .then(res => {
-            this.setState({departments: res.data})
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      } else {
-          this.setState({falseRedirect: true})
-      }
+      axios({
+        method: "get",
+        url: "/api/departments",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+        .then((res) => {
+          this.setState({ departments: res.data });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      this.setState({ falseRedirect: true });
+    }
   }
 
   handleChangeUser = (event) => {
     const { value, name } = event.target;
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       user: {
         ...prevState.user,
-        [name]: value
+        [name]: value,
       },
     }));
   };
 
   handleChangeJob = (event) => {
     const { value, name } = event.target;
-    this.setState(prevState => ({
-      job : {
+    this.setState((prevState) => ({
+      job: {
         ...prevState.job,
-        [name]: value
+        [name]: value,
       },
     }));
   };
 
   handleChangeDepartment = (event) => {
     const { value, name } = event.target;
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       department: {
         ...prevState.department,
-        [name]: value
+        [name]: value,
       },
     }));
   };
 
   handleChangeUserPersonal = (event) => {
     const { value, name } = event.target;
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       userPersonalInfo: {
         ...prevState.userPersonalInfo,
-        [name]: value
+        [name]: value,
       },
     }));
   };
 
   handleChangeUserFinancial = (event) => {
     const { value, name } = event.target;
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       userFinancialInfo: {
         ...prevState.userFinancialInfo,
-        [name]: value
+        [name]: value,
       },
     }));
   };
 
   pushDepartments = () => {
-    let items= []
+    let items = [];
     this.state.departments.map((dept, index) => {
-      items.push(<option key={index} value={dept.id}>{dept.departmentName}</option>)
-    })
+      items.push(
+        <option key={index} value={dept.id}>
+          {dept.departmentName}
+        </option>
+      );
+    });
     return items;
-  }
+  };
 
   onSubmit = (e) => {
+    e.preventDefault();
 
-    e.preventDefault()
-
-    this.setState({hasError: false, errorMsg: "", completed: false})
+    this.setState({ hasError: false, errorMsg: "", completed: false });
 
     let user = {
-      fullName: this.state.user.fullName, 
+      fullName: this.state.user.fullName,
       role: this.state.user.role,
       departmentId: this.state.user.departmentId,
-      active: this.state.user.active
-    }
+      active: this.state.user.active,
+    };
 
     axios({
-      method: 'put',
-      url: '/api/users/' + this.props.location.state.selectedUser.id,
+      method: "put",
+      url: "/api/users/" + this.props.location.state.selectedUser.id,
       data: user,
-      headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-    .then(res => {
- 
-      let user_id = res.data.id
+      .then((res) => {
+        let user_id = res.data.id;
 
-      let userPersonalData = {
-        dateOfBirth: moment(this.state.userPersonalInfo.dateOfBirth).format('YYYY-MM-DD'),
-        gender: this.state.userPersonalInfo.gender,
-        maritalStatus: this.state.userPersonalInfo.maritalStatus,
-        fatherName: this.state.userPersonalInfo.fatherName,
-        idNumber: this.state.userPersonalInfo.idNumber,
-        address: this.state.userPersonalInfo.address,
-        city: this.state.userPersonalInfo.city,
-        country: this.state.userPersonalInfo.country,
-        mobile: this.state.userPersonalInfo.mobile,
-        phone: this.state.userPersonalInfo.phone,
-        emailAddress: this.state.userPersonalInfo.emailAddress,
-        userId: user_id
-      }    
-
-      axios({
-        method: 'put',
-        url: '/api/personalInformations/' + this.state.userPersonalInfo.id,
-        data: userPersonalData,
-        headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
-      })
-      .then(res => {
-        let userFinancialInfo = {
-          bankName: this.state.userFinancialInfo.bankName,
-          accountName: this.state.userFinancialInfo.accountName,
-          accountNumber: this.state.userFinancialInfo.accountNumber,
-          iban: this.state.userFinancialInfo.iban,
-          userId: user_id
-        }
+        let userPersonalData = {
+          dateOfBirth: moment(this.state.userPersonalInfo.dateOfBirth).format(
+            "YYYY-MM-DD"
+          ),
+          gender: this.state.userPersonalInfo.gender,
+          maritalStatus: this.state.userPersonalInfo.maritalStatus,
+          fatherName: this.state.userPersonalInfo.fatherName,
+          idNumber: this.state.userPersonalInfo.idNumber,
+          address: this.state.userPersonalInfo.address,
+          city: this.state.userPersonalInfo.city,
+          country: this.state.userPersonalInfo.country,
+          mobile: this.state.userPersonalInfo.mobile,
+          phone: this.state.userPersonalInfo.phone,
+          emailAddress: this.state.userPersonalInfo.emailAddress,
+          userId: user_id,
+        };
 
         axios({
-          method: 'put',
-          url: 'api/financialInformations/' + this.state.userFinancialInfo.id,
-          data: userFinancialInfo,
-          headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+          method: "put",
+          url: "/api/personalInformations/" + this.state.userPersonalInfo.id,
+          data: userPersonalData,
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
-        .then(res => {
-          if(this.state.job.id !== null) {
-            let newJob = {
-              jobTitle: this.state.job.jobTitle,
-              startDate: this.state.job.startDate,
-              endDate: this.state.job.endDate
-            }
+          .then((res) => {
+            let userFinancialInfo = {
+              bankName: this.state.userFinancialInfo.bankName,
+              accountName: this.state.userFinancialInfo.accountName,
+              accountNumber: this.state.userFinancialInfo.accountNumber,
+              //iban: this.state.userFinancialInfo.iban,
+              userId: user_id,
+            };
+
             axios({
-              method: 'put',
-              url: 'api/jobs/' + this.state.job.id,
-              data: newJob,
-              headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+              method: "put",
+              url:
+                "api/financialInformations/" + this.state.userFinancialInfo.id,
+              data: userFinancialInfo,
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(res => {
-              this.setState({completed: true})
-            })
-            .catch(err => {
-              console.log(err)
-              // this.setState({hasError: true, errMsg: err.data.message})
-              window.scrollTo(0, 0)
-            })
-          } else {
-            this.setState({completed: true})
-          }
-        })
-        .catch(err => {
-          this.setState({hasError: true, errMsg: err.data.message})
-          window.scrollTo(0, 0)
-        })
+              .then((res) => {
+                if (this.state.job.id !== null) {
+                  let newJob = {
+                    jobTitle: this.state.job.jobTitle,
+                    startDate: this.state.job.startDate,
+                    endDate: this.state.job.endDate,
+                  };
+                  axios({
+                    method: "put",
+                    url: "api/jobs/" + this.state.job.id,
+                    data: newJob,
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                  })
+                    .then((res) => {
+                      this.setState({ completed: true });
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      // this.setState({hasError: true, errMsg: err.data.message})
+                      window.scrollTo(0, 0);
+                    });
+                } else {
+                  this.setState({ completed: true });
+                }
+              })
+              .catch((err) => {
+                this.setState({ hasError: true, errMsg: err.data.message });
+                window.scrollTo(0, 0);
+              });
+          })
+          .catch((err) => {
+            this.setState({ hasError: true, errMsg: err.data.message });
+            window.scrollTo(0, 0);
+          });
       })
-      .catch(err => {
-        this.setState({hasError: true, errMsg: err.data.message})
-        window.scrollTo(0, 0)
-      })
-    })
-    .catch(err => {
-      console.log(err)
-      // this.setState({hasError: true, errMsg: err.data.message})
-      window.scrollTo(0, 0)
-    })
-  }
+      .catch((err) => {
+        console.log(err);
+        // this.setState({hasError: true, errMsg: err.data.message})
+        window.scrollTo(0, 0);
+      });
+  };
 
   render() {
-    if(this.state.user.id === null || this.state.userPersonalInfo.id === null || this.state.userFinancialInfo.id === null) {
-      return <p>Loading...</p>
+    if (
+      this.state.user.id === null ||
+      this.state.userPersonalInfo.id === null ||
+      this.state.userFinancialInfo.id === null
+    ) {
+      return <p>Loading...</p>;
     }
     return (
       <Form onSubmit={this.onSubmit}>
         <div className="row">
-        {this.state.falseRedirect ? (<Redirect to="/" />) : null}
+          {this.state.falseRedirect ? <Redirect to="/" /> : null}
           {this.state.hasError ? (
             <Alert variant="danger" className="m-3" block>
               {this.state.errMsg}
             </Alert>
-          ): 
-          this.state.completed ? (
+          ) : this.state.completed ? (
             <Redirect to="employee-list" />
-          ) : (<></>)}
+          ) : (
+            <></>
+          )}
 
           {/* Main Card */}
           <Card className="col-sm-12 main-card">
@@ -312,12 +331,14 @@ export default class EmployeeEdit extends Component {
                           <Form.Row>
                             <DatePicker
                               selected={this.state.userPersonalInfo.dateOfBirth}
-                              onChange={dateOfBirth => this.setState(prevState => ({
+                              onChange={(dateOfBirth) =>
+                                this.setState((prevState) => ({
                                   userPersonalInfo: {
                                     ...prevState.userPersonalInfo,
-                                    dateOfBirth: dateOfBirth
-                                  }
-                                }))}
+                                    dateOfBirth: dateOfBirth,
+                                  },
+                                }))
+                              }
                               showMonthDropdown
                               showYearDropdown
                               dropdownMode="select"
@@ -392,7 +413,6 @@ export default class EmployeeEdit extends Component {
                             required
                           />
                         </Form.Group>
-
                       </Card.Text>
                     </Card.Body>
                   </Card>
@@ -409,7 +429,7 @@ export default class EmployeeEdit extends Component {
                           <Form.Control
                             type="text"
                             value={this.state.userPersonalInfo.address}
-                            onChange={this.handleChangeUserPersonal} 
+                            onChange={this.handleChangeUserPersonal}
                             name="address"
                             placeholder="Enter Address"
                             required
@@ -432,12 +452,12 @@ export default class EmployeeEdit extends Component {
                           <Form.Label className="text-muted required">
                             City
                           </Form.Label>
-                          <Form.Control 
-                            type="text" 
+                          <Form.Control
+                            type="text"
                             value={this.state.userPersonalInfo.city}
                             onChange={this.handleChangeUserPersonal}
                             name="city"
-                            placeholder="Enter City" 
+                            placeholder="Enter City"
                             required
                           />
                         </Form.Group>
@@ -455,27 +475,25 @@ export default class EmployeeEdit extends Component {
                           />
                         </Form.Group>
                         <Form.Group controlId="formPhone">
-                          <Form.Label className="text-muted">
-                            Phone
-                          </Form.Label>
-                          <Form.Control 
-                            type="text" 
-                            value={this.state.userPersonalInfo.phone || ''}
+                          <Form.Label className="text-muted">Phone</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={this.state.userPersonalInfo.phone || ""}
                             onChange={this.handleChangeUserPersonal}
                             name="phone"
-                            placeholder="Enter Phone" 
+                            placeholder="Enter Phone"
                           />
                         </Form.Group>
                         <Form.Group controlId="formEmail">
                           <Form.Label className="text-muted required">
                             Email
                           </Form.Label>
-                          <Form.Control 
-                            type="text" 
+                          <Form.Control
+                            type="text"
                             value={this.state.userPersonalInfo.emailAddress}
                             onChange={this.handleChangeUserPersonal}
                             name="emailAddress"
-                            placeholder="Enter Email" 
+                            placeholder="Enter Email"
                             required
                           />
                         </Form.Group>
@@ -526,7 +544,7 @@ export default class EmployeeEdit extends Component {
                             placeholder="Enter Account number"
                           />
                         </Form.Group>
-                        <Form.Group controlId="formIban">
+                        {/* <Form.Group controlId="formIban">
                           <Form.Label className="text-muted">IBAN </Form.Label>
                           <Form.Control 
                             type="text" 
@@ -535,7 +553,7 @@ export default class EmployeeEdit extends Component {
                             name="iban"
                             placeholder="Enter Iban" 
                           />
-                        </Form.Group>
+                        </Form.Group> */}
                       </Card.Text>
                     </Card.Body>
                   </Card>
@@ -571,7 +589,7 @@ export default class EmployeeEdit extends Component {
                           </Form.Label>
                           <Form.Control
                             as="select"
-                            value={this.state.user.role || ''}
+                            value={this.state.user.role || ""}
                             onChange={this.handleChangeUser}
                             name="role"
                             required
